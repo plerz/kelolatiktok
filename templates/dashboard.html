@@ -68,26 +68,10 @@ table td{padding-top:10px!important;padding-bottom:10px!important}
 .account-edit input[name="category"]{max-width:190px}
 .account-name{display:flex;align-items:center;width:100%}
 .category-top{margin-left:auto;margin-right:8px;font-size:14px;font-weight:400;font-style:italic;color:#475467;white-space:nowrap}
-
-.stats-line{
-  display:flex!important;
-  flex-direction:row!important;
-  flex-wrap:nowrap!important;
-  align-items:center!important;
-  gap:12px!important;
-}
-.stats-line .stat-posts{order:1!important}
-.stats-line .stat-views{order:2!important}
-.stats-line .stat-likes{order:3!important}
-.stats-line .stat-comments{order:4!important}
-.stats-line .stat-followers{order:5!important}
-.stats-line .stat-following{order:6!important}
-.action.purple[href]{cursor:pointer;text-decoration:none}
-
 </style>
 </head>
 <body>
-<aside><div class="brand">♪ <b>KelolaTiktok</b><small>Posting Manager</small></div><nav><a class="active">⌂ Dashboard</a><a>♙ Accounts <span>{{accounts|length}}</span></a><a>▣ Content Library</a><a>✎ Create Post</a><a>□ Schedule</a><a>▦ Calendar</a><a href="/bulk-upload">⇧ Bulk Upload</a><a>♧ Account Groups</a><a>▥ Analytics</a><a>⚙ Settings</a></nav></aside>
+<aside><div class="brand">♪ <b>KelolaTiktok</b><small>Posting Manager</small></div><nav><a class="active">⌂ Dashboard</a><a>♙ Accounts <span>{{accounts|length}}</span></a><a>▣ Content Library</a><a>✎ Create Post</a><a>□ Schedule</a><a>▦ Calendar</a><a>⇧ Bulk Upload</a><a>♧ Account Groups</a><a>▥ Analytics</a><a>⚙ Settings</a></nav></aside>
 <main>
 <header><input placeholder="Search accounts, content, or hashtag…"><div>Sandbox • KelolaTiktok</div></header>
 {% with messages=get_flashed_messages(with_categories=true) %}{% for cat,msg in messages %}<div class="flash {{cat}}">{{msg}}</div>{% endfor %}{% endwith %}
@@ -118,13 +102,13 @@ table td{padding-top:10px!important;padding-bottom:10px!important}
     {% if a.category %}<em class="category-top">{{a.category}}</em>{% endif %}
    </div>
    <div class="stats-line">
-     <span class="stat-posts">Posts <b>{{a.video_count if a.video_count is not none else 0}}</b></span>
-     <span class="stat-views">Views <b>{{a.view_count if a.view_count is not none else 0}}</b></span>
-     <span class="stat-likes">Likes <b>{{a.likes_count if a.likes_count is not none else 0}}</b></span>
-     <span class="stat-comments">Comments <b>{{a.comment_count if a.comment_count is not none else 0}}</b></span>
-     <span class="stat-followers">Followers <b>{{a.follower_count if a.follower_count is not none else 0}}</b></span>
-     <span class="stat-following">Following <b>{{a.following_count if a.following_count is not none else 0}}</b></span>
-    </div>
+    <span>Posts <b>{{a.video_count if a.video_count is not none else 0}}</b></span>
+    <span>Views <b>{{a.view_count if a.view_count is not none else 0}}</b></span>
+    <span>Likes <b>{{a.likes_count if a.likes_count is not none else 0}}</b></span>
+    <span>Comments <b>{{a.comment_count if a.comment_count is not none else 0}}</b></span>
+    <span>Followers <b>{{a.follower_count if a.follower_count is not none else 0}}</b></span>
+    <span>Following <b>{{a.following_count if a.following_count is not none else 0}}</b></span>
+   </div>
    <div class="email-line">✉ <strong>{{a.email if a.email else 'Email belum diisi'}}</strong></div>
    {% if not a.username or not a.email or not a.category %}
    <div class="account-actions-inline">
@@ -175,7 +159,7 @@ table td{padding-top:10px!important;padding-bottom:10px!important}
 <div class="empty"><h3>No TikTok account connected yet</h3><p>Use your authorized Sandbox Target User to test Login Kit.</p><a class="btn" href="/auth/tiktok/login">Connect TikTok Account</a></div>
 {% endif %}
 </div>
-<div class="panel"><h3>Quick Actions</h3><a class="action" href="/auth/tiktok/login">Connect Account</a><div class="action pink">Create New Post</div><a class="action purple" href="/bulk-upload">Bulk Upload</a><div class="action green">Media Library</div></div>
+<div class="panel"><h3>Quick Actions</h3><a class="action" href="/auth/tiktok/login">Connect Account</a><div class="action pink">Create New Post</div><div class="action purple">Bulk Upload</div><div class="action green">Media Library</div><a class="action" href="/view-like-comment" style="background:#f97316;color:#fff;text-decoration:none;">View, Like &amp; Comment</a></div>
 </section>
 </main>
 
