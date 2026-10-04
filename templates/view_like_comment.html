@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>View, Like & Comment • KelolaTiktok</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+.vlc-wrap{max-width:1200px;margin:24px auto}.vlc-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}.vlc-head h1{margin:0;color:#0b1d35}.back{color:#175cd3;text-decoration:none;font-weight:700}
+.vlc-card{background:#fff;border:1px solid #e4e7ec;border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 2px 8px rgba(16,24,40,.04)}
+.vlc-card label{display:block;font-weight:700;margin-bottom:8px;color:#344054}.vlc-input{width:100%;box-sizing:border-box;height:44px;border:1px solid #d0d5dd;border-radius:9px;padding:0 12px;font-size:14px}.vlc-textarea{width:100%;box-sizing:border-box;min-height:82px;border:1px solid #d0d5dd;border-radius:9px;padding:10px 12px;font-size:14px;resize:vertical}.vlc-save{margin-top:12px;background:#246bfd;color:#fff;border:0;border-radius:9px;padding:11px 18px;font-weight:700;cursor:pointer}
+.note{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:10px;padding:12px 14px;margin-bottom:18px}.target{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.target a{word-break:break-all;color:#175cd3}.comment-preview{color:#667085;margin-top:8px}
+.progress{font-weight:800;color:#0b1d35}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse}th,td{padding:12px 10px;border-bottom:1px solid #eaecf0;text-align:left;vertical-align:middle}th{font-size:12px;text-transform:uppercase;color:#667085}td{color:#344054}.acct{display:flex;align-items:center;gap:10px}.acct img{width:38px;height:38px;border-radius:50%;object-fit:cover}.acct b{color:#0b1d35}.profile-btn{display:inline-flex;background:#246bfd;color:#fff;text-decoration:none;border-radius:8px;padding:8px 11px;font-weight:700}.check{display:flex;align-items:center;gap:6px;white-space:nowrap}.check input{width:17px;height:17px}.save-status{background:#eef4ff;color:#175cd3;border:0;border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer}.done{color:#079455;font-weight:700}.empty{padding:24px;text-align:center;color:#667085}.email{display:block;color:#667085;font-size:12px;margin-top:3px;word-break:break-all}.copy-btn{border:0;background:#f2f4f7;color:#175cd3;border-radius:7px;padding:5px 8px;font-weight:700;cursor:pointer;font-size:11px}.comment-table td{font-size:13px}.comment-text{min-width:320px;max-width:520px;white-space:pre-wrap;word-break:break-word}.count-badge{background:#eef4ff;color:#175cd3;border-radius:999px;padding:5px 9px;font-weight:800;font-size:12px}.file-help{color:#667085;font-size:12px;margin-top:6px}.upload-label{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.upload-label input[type=file]{border:1px solid #d0d5dd;border-radius:8px;padding:8px;background:#fff}
+</style>
+</head>
+<body>
+<aside><div class="brand">♪ <b>KelolaTiktok</b><small>Posting Manager</small></div><nav><a href="/">⌂ Dashboard</a><a>♙ Accounts <span>{{rows|length}}</span></a><a>▣ Content Library</a><a href="/view-like-comment">♥ View, Like &amp; Comment</a><a>□ Schedule</a><a>▦ Calendar</a><a href="/bulk-upload">⇧ Bulk Upload</a><a>♧ Account Groups</a><a>▥ Analytics</a><a>⚙ Settings</a></nav></aside>
+<main>
+<header><input placeholder="Search accounts, content, or hashtag…"><div>Sandbox • KelolaTiktok</div></header>
+<div class="vlc-wrap">
+  <div class="vlc-head"><h1>View, Like &amp; Comment</h1><a class="back" href="/">← Kembali ke Dashboard</a></div>
+  <div class="note"><b>Manual workflow:</b> halaman ini hanya membantu menyimpan target, membuka video, dan mencatat checklist. KelolaTiktok tidak melakukan View, Like, atau Comment secara otomatis.</div>
+  <div class="vlc-card">
+    <form method="post" action="/view-like-comment" enctype="multipart/form-data">
+      <label>Link Video TikTok</label>
+      <input class="vlc-input" name="target_url" value="{{task.target_url if task else ''}}" placeholder="https://www.tiktok.com/@username/video/..." required>
+      <label style="margin-top:14px" class="upload-label">Upload TXT komentar (opsional)
+        <input type="file" name="comments_file" accept=".txt,text/plain">
+      </label>
+      <div class="file-help">Satu baris = satu komentar. Contoh: 500 baris TXT akan menjadi 500 baris penugasan komentar. Jika komentar lebih banyak daripada akun terhubung, penugasan akun akan berulang secara berurutan. KelolaTiktok hanya menyiapkan daftar; komentar tetap Anda kirim sendiri.</div>
+      <button class="vlc-save" type="submit">Buat / Simpan Target</button>
+    </form>
+  </div>
+  {% if task %}
+  <div class="vlc-card">
+    <div class="target"><b>Target:</b><a href="{{task.target_url}}" target="_blank" rel="noopener">{{task.target_url}}</a></div>
+    {% if comment_rows %}<div class="comment-preview"><b>Distribusi komentar:</b> <span class="count-badge">{{comment_rows|length}} komentar</span></div>{% endif %}
+  </div>
+  <div class="vlc-card">
+    <div class="vlc-head" style="margin-bottom:10px"><h2 style="margin:0">Akun Terhubung</h2><div class="progress">{{rows|length}} akun</div></div>
+    {% if rows %}<div class="table-wrap"><table><thead><tr><th>Akun</th><th>Target</th><th>View</th><th>Like</th><th>Comment</th><th>Simpan</th></tr></thead><tbody>
+    {% for r in rows %}
+    <tr>
+      <td><div class="acct">{% if r.avatar_url %}<img src="/account/{{r.open_id}}/avatar" alt="">{% endif %}<div><b>{{r.display_name}}</b>{% if r.email %}<span class="email">✉ {{r.email}} <button type="button" class="copy-btn" data-copy="{{r.email}}">Salin</button></span>{% else %}<span class="email">Email belum diisi</span>{% endif %}</div></div></td>
+      <td><a class="profile-btn" href="{{task.target_url}}" target="_blank" rel="noopener">Buka Target</a></td>
+      <td><label class="check"><input form="status-{{r.open_id}}" type="checkbox" name="viewed" value="1" {% if r.viewed %}checked{% endif %}> Selesai</label></td>
+      <td><label class="check"><input form="status-{{r.open_id}}" type="checkbox" name="liked" value="1" {% if r.liked %}checked{% endif %}> Selesai</label></td>
+      <td><label class="check"><input form="status-{{r.open_id}}" type="checkbox" name="commented" value="1" {% if r.commented %}checked{% endif %}> Selesai</label></td>
+      <td>
+        <form id="status-{{r.open_id}}" method="post" action="/view-like-comment/{{task.id}}/{{r.open_id}}/status"></form>
+        <button class="save-status" form="status-{{r.open_id}}" type="submit">Simpan</button>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody></table></div>{% else %}<div class="empty">Belum ada akun terhubung.</div>{% endif %}
+  </div>
+
+  {% if comment_rows %}
+  <div class="vlc-card">
+    <div class="vlc-head" style="margin-bottom:10px"><h2 style="margin:0">Daftar Komentar</h2><div class="progress">{{comment_rows|length}} komentar</div></div>
+    <div class="file-help" style="margin-bottom:12px">Urutan mengikuti baris TXT. Nama akun, email, dan komentar yang harus Anda kirim ditampilkan di sini.</div>
+    <div class="table-wrap"><table class="comment-table"><thead><tr><th>No.</th><th>Akun & Email</th><th>Komentar</th><th>Target</th><th>Status</th><th>Aksi</th></tr></thead><tbody>
+    {% for c in comment_rows %}
+    <tr>
+      <td><b>{{c.line_no}}</b></td>
+      <td><div class="acct">{% if c.avatar_url %}<img src="/account/{{c.open_id}}/avatar" alt="">{% endif %}<div><b>{{c.display_name}}</b><span class="email">✉ {{c.email or 'Email belum diisi'}}{% if c.email %} <button type="button" class="copy-btn" data-copy="{{c.email}}">Salin</button>{% endif %}</span></div></div></td>
+      <td class="comment-text">{{c.comment_text}}</td>
+      <td><a class="profile-btn" href="{{task.target_url}}" target="_blank" rel="noopener">Buka Target</a></td>
+      <td>{% if c.commented %}<span class="done">✓ Selesai</span>{% else %}<span>Belum</span>{% endif %}</td>
+      <td><form method="post" action="/view-like-comment/comment/{{c.id}}/status"><label class="check"><input type="checkbox" name="commented" value="1" {% if c.commented %}checked{% endif %} onchange="this.form.submit()"> Selesai</label></form></td>
+    </tr>
+    {% endfor %}
+    </tbody></table></div>
+  </div>
+  {% endif %}
+  {% endif %}
+</div>
+<script>
+document.addEventListener('click', function(e){
+  const b=e.target.closest('[data-copy]');
+  if(!b) return;
+  const value=b.getAttribute('data-copy')||'';
+  navigator.clipboard.writeText(value).then(()=>{const old=b.textContent;b.textContent='Tersalin';setTimeout(()=>b.textContent=old,1200);}).catch(()=>{});
+});
+</script>
+</main>
+</body></html>
